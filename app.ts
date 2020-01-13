@@ -1,7 +1,10 @@
+type NumOrString = number | string;
+type isDescription = "is-number" | "is-text"
+
 function combine(
-  input1: number | string,
-  input2: number | string,
-  resultType: "is-number" | "is-text"
+  input1: NumOrString,
+  input2: NumOrString,
+  resultType: isDescription
 ) {
   let result;
   if (
