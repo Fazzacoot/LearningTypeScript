@@ -1,15 +1,10 @@
-function add(n1: number, n2: number, showResult: boolean, phrase: string) {
-  const result = n1 + n2;
-  if (showResult) {
-    console.log(phrase + result);
-  } else {
-    return n1 + n2;
-  }
-}
+//You can explisitly tell TS what values the object has
+//const person: { name: string; age: number }
 
-const number1 = 5;
-const number2 = 2.8;
-const printResult = true;
-const resultPhrase = "Result is: ";
+//TS infers the values here
+const person = {
+  name: "Faron",
+  age: 24
+};
 
-add(number1, number2, printResult, resultPhrase);
+console.log(person);
