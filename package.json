@@ -1,0 +1,23 @@
+{
+  "name": "learningtypescript",
+  "version": "1.0.0",
+  "description": "Learning TypeScript",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "lite-server"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Fazzacoot/LearningTypeScript.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Fazzacoot/LearningTypeScript/issues"
+  },
+  "homepage": "https://github.com/Fazzacoot/LearningTypeScript#readme",
+  "devDependencies": {
+    "lite-server": "^2.5.4"
+  }
+}
