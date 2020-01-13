@@ -2,10 +2,16 @@
 //const person: { name: string; age: number }
 
 //TS infers the values here
-const person = {
+const person: {
+  name: string;
+  age: number;
+  hobbies: string[];
+  role: [number, string];
+} = {
   name: "Faron",
   age: 24,
-  hobbies: ["Video Games", "Coding"]
+  hobbies: ["Video Games", "Coding"],
+  role: [2, "Author"]
 };
 
 let favouriteActivities: string[];
