@@ -10,3 +10,11 @@ userInput = "Faron";
 if (typeof userInput === "string") {
   userName = userInput;
 }
+
+//never means that this function will never ever return a value
+//never needs to be explisitly stated as void is infered
+function createError(message: string, code: number): never {
+  throw {message: message, code: code};
+}
+
+createError('You have an error OH NO!!!!', 504);
