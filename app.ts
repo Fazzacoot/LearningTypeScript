@@ -1,33 +1,14 @@
-type NumOrString = number | string;
-type isDescription = "is-number" | "is-text"
-
-function combine(
-  input1: NumOrString,
-  input2: NumOrString,
-  resultType: isDescription
-) {
-  let result;
-  if (
-    (typeof input1 === "number" && typeof input2 === "number") ||
-    resultType == "is-number"
-  ) {
-    result = +input1 + +input2;
-  } else {
-    result = input1.toString() + input2.toString();
-  }
-  return result;
-  // if (resultType === "is-number") {
-  //   return +result;
-  // } else {
-  //   return result.toString();
-  // }
+//return type is infured the type of the function based on what it returns
+//you can specify the type by doing (): type
+function add(n1: number, n2: number) {
+  return n1 + n2;
 }
 
-const combinedAges = combine(23, 10, "is-number");
-console.log(combinedAges);
+//type of void
+function printAnswer(num: number) {
+  console.log("Result:" + num);
+}
 
-const combinedStringAges = combine("23", "10", "is-number");
-console.log(combinedStringAges);
+printAnswer(add(10, 23));
 
-const combinedNames = combine("Faron", "Gottlieb", "is-text");
-console.log(combinedNames);
+//let someUndefinedValue: undefined;
