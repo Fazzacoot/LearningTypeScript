@@ -1,15 +1,25 @@
 "use strict";
 class Department {
-    constructor(n) {
-        this.name = n;
+    constructor(id, name) {
+        this.id = id;
+        this.name = name;
+        this.employees = [];
     }
     describe() {
-        console.log("Department: " + this.name);
+        console.log(`Department (${this.id}): ${this.name}`);
+    }
+    addEmployee(employee) {
+        this, this.employees.push(employee);
+    }
+    showEmployeeInformation() {
+        console.log(this.employees.length);
+        console.log(this.employees);
     }
 }
-const development = new Department("Development");
+const development = new Department("DEV", "Development");
 console.log(development);
 development.describe();
-const developmentCopy = { name: 'HR', describe: development.describe };
-developmentCopy.describe();
+development.addEmployee("Faron");
+development.addEmployee("Dylan");
+development.showEmployeeInformation();
 //# sourceMappingURL=app.js.map
