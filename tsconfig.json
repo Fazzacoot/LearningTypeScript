@@ -67,7 +67,8 @@
   "exclude": [
     "node_modules", // would be defultly excluded if exclude is not here
     "S2 Completed",
-    "S3 Completed"
+    "S3 Completed",
+    "S4 Completed"
   ]
   //include files from compilation only files in here will be compiled
   // "include": [
