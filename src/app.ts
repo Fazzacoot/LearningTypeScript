@@ -1,20 +1,27 @@
-//intefaces describe and pbject
+//intefaces describe the structure of an object or a class
 //defines a structue but does not add values to the structure
-interface Person {
+interface Greetable {
   name: string;
-  age: number;
-
   greet(phrase: string): void;
 }
 
-let person1: Person;
+//can implement multiple interfaces
+class Person implements Greetable {
+  readonly name: string;
+  age = 24;
 
-person1 = {
-  name: "Faron",
-  age: 24,
-  greet(phrase:string){
-    console.log(`${phrase} ${this.name}`)
+  constructor(n: string) {
+    this.name = n;
+  }
+
+  greet(phrase: string) {
+    console.log(`${phrase} ${this.name}`);
   }
 }
 
-person1.greet('Hi there');
+let person1: Greetable;
+
+person1 = new Person("Faron");
+
+person1.greet("Hi there");
+console.log(person1);
