@@ -2,6 +2,8 @@
 //defines a structue but does not add values to the structure
 interface Named {
   name: string;
+  //? - means optional
+  displayName?: string;
 }
 //interfactes can exted each other
 //can extend multiple interfaces
@@ -22,9 +24,11 @@ add = (n1: number, n2:number) => {
 
 //can implement multiple interfaces
 class Person implements Greetable {
+  //? - can be added to optional as well
   readonly name: string;
   age = 24;
 
+   //? - can be added to optional as well
   constructor(n: string) {
     this.name = n;
   }
