@@ -1,4 +1,4 @@
-//intefaces describe the structure of an object or a class
+//intefaces describe the structure of an object or a class or a function
 //defines a structue but does not add values to the structure
 interface Named {
   name: string;
@@ -7,6 +7,17 @@ interface Named {
 //can extend multiple interfaces
 interface Greetable extends Named {
   greet(phrase: string): void;
+}
+
+//type AddFn = (a: number, b: number) => number;
+//custom function type instead of using the above
+interface AddFn{
+  (a: number, b: number): number;
+}
+
+let add: AddFn;
+add = (n1: number, n2:number) => {
+  return n1 + n2;
 }
 
 //can implement multiple interfaces
