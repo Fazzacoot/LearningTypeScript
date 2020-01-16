@@ -1,7 +1,11 @@
 //intefaces describe the structure of an object or a class
 //defines a structue but does not add values to the structure
-interface Greetable {
+interface Named {
   name: string;
+}
+//interfactes can exted each other
+//can extend multiple interfaces
+interface Greetable extends Named {
   greet(phrase: string): void;
 }
 
