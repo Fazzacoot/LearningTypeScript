@@ -28,4 +28,19 @@ const mergedObj = merge({ name: "Faron" }, { age: 24 });
 // const mergedObj = merge({ name: "Faron" }, 30);
 console.log(mergedObj);
 console.log(mergedObj.name);
+
+interface Lengthy {
+  length: number;
+}
+
+//we do not care whar property el is as long as we can get its length
+function countAndDescribe<T extends Lengthy>(el: T): [T, string] {
+  let description = "Got Value?";
+  if (el.length > 0) {
+    description = `Got ${el.length} element(s)`;
+  }
+  return [el, description];
+}
+
+console.log(countAndDescribe(["Hello", "there"]));
 //Custom Generics
