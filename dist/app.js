@@ -9,4 +9,10 @@ const promise = new Promise((resolve, reject) => {
 promise.then(data => {
     data.length;
 });
+function merge(objA, objB) {
+    return Object.assign(objA, objB);
+}
+const mergedObj = merge({ name: "Faron" }, { age: 24 });
+console.log(mergedObj);
+console.log(mergedObj.name);
 //# sourceMappingURL=app.js.map
