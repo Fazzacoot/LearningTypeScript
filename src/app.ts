@@ -53,5 +53,47 @@ function extractAndConvert<T extends object, U extends keyof T>(
 ) {
   return obj[key];
 }
-extractAndConvert({name:"Faron"}, "name");
+extractAndConvert({ name: "Faron" }, "name");
 //keyof
+
+//Generic Class
+/*
+If we do not care about the type of data we want intem to be but want it to be of only 
+type number/string/object then we can make it a generic class
+*/
+class DataStorage<T> {
+  private data: T[] = [];
+
+  addItem(item: T) {
+    this.data.push(item);
+  }
+
+  removeItem(item: T) {
+    if(this.data.indexOf(item) != -1){ //since obj is a referenc type it will return -1 and will remove only the last el
+      this.data.splice(this.data.indexOf(item), 1);
+    }
+
+  }
+
+  getItems() {
+    return [...this.data];
+  }
+}
+
+const textStorage = new DataStorage<string>();
+textStorage.addItem("Faron");
+textStorage.addItem("Dean");
+textStorage.removeItem("Dean");
+console.log(textStorage.getItems());
+
+const numberStorage = new DataStorage<number>();
+
+const objStorage = new DataStorage<object>();
+const deanObj = { name: "Dean" }
+objStorage.addItem({ name: "Faron" });
+objStorage.addItem(deanObj);
+objStorage.removeItem(deanObj);
+console.log(objStorage.getItems());
+
+
+//Generic Class
