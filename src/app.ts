@@ -124,3 +124,18 @@ moveAnimal({ type: "bird", airSpeed: 12 });
 const userInputEl = document.getElementById("user-input") as HTMLInputElement;
 userInputEl.value = "Hello";
 //Type Casting
+
+//Index Properties
+interface ErrorContainer {
+  // index properties means you do not know how many properties there will be and their names
+  //we know that each property has a name that is a string and is of type string
+  [prop: string]: string;
+  //must be the same type as the index propery
+  // id: string;
+}
+
+const errorBag: ErrorContainer = {
+  email: "Not a valid Email",
+  username: "Must start with a capital letter"
+};
+//Index Properties
