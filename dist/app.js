@@ -1,4 +1,5 @@
 "use strict";
+var _a, _b;
 const e1 = {
     name: "Faron",
     privileges: ["db-admin"],
@@ -70,4 +71,10 @@ function addition(a, b) {
 }
 const reslut = addition('Faron', 'Gottlieb');
 reslut.split(' ');
+const fetchedUserData = {
+    id: "frn",
+    name: 'Faron',
+    job: { title: 'CEO', description: 'Owner' }
+};
+console.log((_b = (_a = fetchedUserData) === null || _a === void 0 ? void 0 : _a.job) === null || _b === void 0 ? void 0 : _b.title);
 //# sourceMappingURL=app.js.map

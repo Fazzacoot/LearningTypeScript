@@ -154,3 +154,14 @@ function addition(a: Combinable, b: Combinable) {
 const reslut = addition('Faron','Gottlieb') ;
 reslut.split(' ')
 //Function overload
+
+//Optional chaining
+const fetchedUserData = {
+  id:"frn",
+  name: 'Faron',
+  job: {title: 'CEO', description: 'Owner'}
+}
+//? allows us to access nested properties that we are not sure will exist from an API or outside data source
+// it lets TS know if the property exists continue to look at the next property and then fetch its value
+console.log(fetchedUserData?.job?.title)
+//Optional chaining
