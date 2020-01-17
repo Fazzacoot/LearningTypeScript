@@ -87,31 +87,40 @@ useVheicle(v2);
 //Discriminated Unions
 //type is a literal type that must equal that value this is the discriminated union value
 interface Bird {
-  type: 'bird',
-  airSpeed:number;
+  type: "bird";
+  airSpeed: number;
 }
 
-interface Dog{
-  type: 'dog',
-  landSpeed: number
+interface Dog {
+  type: "dog";
+  landSpeed: number;
 }
 
 type Animal = Bird | Dog;
 
-function moveAnimal(animal: Animal){
+function moveAnimal(animal: Animal) {
   let speed;
-  switch(animal.type){
-    case 'bird':
+  switch (animal.type) {
+    case "bird":
       speed = animal.airSpeed;
       break;
-    case 'dog':
-      speed = animal.landSpeed; 
-    break; 
+    case "dog":
+      speed = animal.landSpeed;
+      break;
   }
-  console.log(`Speed ${speed}` )
+  console.log(`Speed ${speed}`);
 }
 
-moveAnimal({type:'bird', airSpeed: 12})
+moveAnimal({ type: "bird", airSpeed: 12 });
 //Discriminated Unions
 
 //type guards ends
+
+//Type Casting
+//Sets the type of a variable if TS can not infer the type
+//2 type casting methods <> or as keyword
+//! - means will never yial a null value, setting the type also tells TS that the value will not be null
+// const userInputEl = <HTMLInputElement> document.getElementById("user-input")!;
+const userInputEl = document.getElementById("user-input") as HTMLInputElement;
+userInputEl.value = "Hello";
+//Type Casting

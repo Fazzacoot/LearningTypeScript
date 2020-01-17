@@ -46,14 +46,16 @@ useVheicle(v2);
 function moveAnimal(animal) {
     let speed;
     switch (animal.type) {
-        case 'bird':
+        case "bird":
             speed = animal.airSpeed;
             break;
-        case 'dog':
+        case "dog":
             speed = animal.landSpeed;
             break;
     }
     console.log(`Speed ${speed}`);
 }
-moveAnimal({ type: 'bird', airSpeed: 12 });
+moveAnimal({ type: "bird", airSpeed: 12 });
+const userInputEl = document.getElementById("user-input");
+userInputEl.value = "Hello";
 //# sourceMappingURL=app.js.map
