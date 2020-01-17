@@ -49,10 +49,12 @@ textStorage.addItem("Dean");
 textStorage.removeItem("Dean");
 console.log(textStorage.getItems());
 const numberStorage = new DataStorage();
-const objStorage = new DataStorage();
-const deanObj = { name: "Dean" };
-objStorage.addItem({ name: "Faron" });
-objStorage.addItem(deanObj);
-objStorage.removeItem(deanObj);
-console.log(objStorage.getItems());
+function createCourseGoal(title, description, date) {
+    let courseGoal = {};
+    courseGoal.title = title;
+    courseGoal.description = description;
+    courseGoal.completeUntil = date;
+    return courseGoal;
+}
+const readonlyNames = ["Faron", "Meryl"];
 //# sourceMappingURL=app.js.map

@@ -61,7 +61,7 @@ extractAndConvert({ name: "Faron" }, "name");
 If we do not care about the type of data we want intem to be but want it to be of only 
 type number/string/object then we can make it a generic class
 */
-class DataStorage<T> {
+class DataStorage<T extends string | number | boolean> {
   private data: T[] = [];
 
   addItem(item: T) {
@@ -69,10 +69,10 @@ class DataStorage<T> {
   }
 
   removeItem(item: T) {
-    if(this.data.indexOf(item) != -1){ //since obj is a referenc type it will return -1 and will remove only the last el
+    if (this.data.indexOf(item) != -1) {
+      //since obj is a referenc type it will return -1 and will remove only the last el
       this.data.splice(this.data.indexOf(item), 1);
     }
-
   }
 
   getItems() {
@@ -88,12 +88,32 @@ console.log(textStorage.getItems());
 
 const numberStorage = new DataStorage<number>();
 
-const objStorage = new DataStorage<object>();
-const deanObj = { name: "Dean" }
-objStorage.addItem({ name: "Faron" });
-objStorage.addItem(deanObj);
-objStorage.removeItem(deanObj);
-console.log(objStorage.getItems());
-
-
+// const objStorage = new DataStorage<object>();
+// const deanObj = { name: "Dean" };
+// objStorage.addItem({ name: "Faron" });
+// objStorage.addItem(deanObj);
+// objStorage.removeItem(deanObj);
+// console.log(objStorage.getItems());
 //Generic Class
+
+//Generic Utility Types
+interface CourseGoal {
+  title: string;
+  description: string;
+  completeUntil: Date;
+}
+
+function createCourseGoal(
+  title: string,
+  description: string,
+  date: Date
+): CourseGoal {
+  let courseGoal: Partial<CourseGoal> = {}; //allows object to temporaraly not requier interface values
+  courseGoal.title = title;
+  courseGoal.description = description;
+  courseGoal.completeUntil = date;
+  return courseGoal as CourseGoal;
+}
+
+const readonlyNames:Readonly<string[]> = ["Faron", "Meryl"]; //not allowed to change or add properties
+//Generic Utility Types
