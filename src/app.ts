@@ -168,6 +168,7 @@ console.log(fetchedUserData?.job?.title);
 
 //Nullish Coalescing = ??
 //?? = if null or undefined us the fallback value
+//if you dont know if a value will be null or undefined but want it to have a defualt value
 const userInput = null;
 const storeData = userInput ?? "DEFAULT";
 
