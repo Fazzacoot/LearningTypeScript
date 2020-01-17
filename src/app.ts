@@ -44,3 +44,14 @@ function countAndDescribe<T extends Lengthy>(el: T): [T, string] {
 
 console.log(countAndDescribe(["Hello", "there"]));
 //Custom Generics
+
+//keyof
+//forces you to make sure that the object passed in has a key of the specified name
+function extractAndConvert<T extends object, U extends keyof T>(
+  obj: T,
+  key: U
+) {
+  return obj[key];
+}
+extractAndConvert({name:"Faron"}, "name");
+//keyof
