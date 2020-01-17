@@ -69,12 +69,15 @@ function addition(a, b) {
     }
     return a + b;
 }
-const reslut = addition('Faron', 'Gottlieb');
-reslut.split(' ');
+const reslut = addition("Faron", "Gottlieb");
+reslut.split(" ");
 const fetchedUserData = {
     id: "frn",
-    name: 'Faron',
-    job: { title: 'CEO', description: 'Owner' }
+    name: "Faron",
+    job: { title: "CEO", description: "Owner" }
 };
 console.log((_b = (_a = fetchedUserData) === null || _a === void 0 ? void 0 : _a.job) === null || _b === void 0 ? void 0 : _b.title);
+const userInput = null;
+const storeData = (userInput !== null && userInput !== void 0 ? userInput : "DEFAULT");
+console.log(storeData);
 //# sourceMappingURL=app.js.map
