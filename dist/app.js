@@ -62,4 +62,12 @@ const errorBag = {
     email: "Not a valid Email",
     username: "Must start with a capital letter"
 };
+function addition(a, b) {
+    if (typeof a === "string" || typeof b === "string") {
+        return a.toString() + b.toString();
+    }
+    return a + b;
+}
+const reslut = addition('Faron', 'Gottlieb');
+reslut.split(' ');
 //# sourceMappingURL=app.js.map

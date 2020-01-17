@@ -139,3 +139,18 @@ const errorBag: ErrorContainer = {
   username: "Must start with a capital letter"
 };
 //Index Properties
+
+//Function overload
+//adding the 2nd function tells TS that if it returns a number if the fucntion is of type number and string if of string
+function addition(a: string, b: string): string;
+function addition(a: number, b: number): number;
+function addition(a: Combinable, b: Combinable) {
+  if (typeof a === "string" || typeof b === "string") {
+    return a.toString() + b.toString();
+  }
+  return a + b;
+}
+
+const reslut = addition('Faron','Gottlieb') ;
+reslut.split(' ')
+//Function overload
