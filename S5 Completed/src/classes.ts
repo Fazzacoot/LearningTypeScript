@@ -82,7 +82,7 @@ class AccountingDepartment extends Department {
     this.addRepot(value);
   }
   //private construction forces a singleton 
-  //this only allows on instance of a class to be created
+  //this only allows one instance of a class to be created
   private constructor(id: string, private reports: string[]) {
     //super calls the base class and requiers all parameters passed to it
     super(id, "Accounting");
