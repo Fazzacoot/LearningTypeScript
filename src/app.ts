@@ -65,12 +65,48 @@ function ProductLogger(target: any, propertyName: string | Symbol) {
   console.log(target);
   console.log(propertyName);
 }
+
+function ProductAccessorLogger(
+  target: any,
+  name: string,
+  descriptor: PropertyDescriptor
+) {
+  console.log("Accessor decorator");
+  console.log(target);
+  console.log(name);
+  console.log(descriptor);
+}
+
+function MethodLogger(
+  target: any,
+  name: string | Symbol,
+  descriptor: PropertyDescriptor
+) {
+  console.log("Method decorator");
+  console.log(target);
+  console.log(name);
+  console.log(descriptor);
+}
+
+function ParameterLogger(
+  target: any,
+  name: string | Symbol,
+  position: number
+) {
+  console.log("Parameter decorator");
+  console.log(target);
+  console.log(name);
+  console.log(position);
+}
+
 class Product {
-  //Decorators on properties take 2 arguments - the target and the
+  //Decorators on properties take 2 arguments - the target and the propertyName
   @ProductLogger
   title: string;
   private _price: number;
 
+  //Decorators on accessor take 3 arguments - the target, the name and the descriptor
+  @ProductAccessorLogger
   set price(val: number) {
     if (val > 0) {
       this._price = val;
@@ -84,7 +120,9 @@ class Product {
     this._price = p;
   }
 
-  getPriceWithTax(tax: number) {
+   //Decorators on method take 3 arguments - the target, the name and the descriptor
+  @MethodLogger
+  getPriceWithTax(@ParameterLogger tax: number) { //Decorators on argument take 3 arguments - the target, the name and the position
     return this._price * (1 + tax);
   }
 }
