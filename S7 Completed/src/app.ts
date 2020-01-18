@@ -42,7 +42,7 @@ function countAndDescribe<T extends Lengthy>(el: T): [T, string] {
   return [el, description];
 }
 
-console.log(countAndDescribe(["Hello", "there"]));
+console.log(countAndDescribe('["Hello", "there"]'));
 //Custom Generics
 
 //keyof
