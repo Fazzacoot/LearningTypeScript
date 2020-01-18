@@ -18,6 +18,10 @@
 function rules apply so  Logger executes before  WithTemplate
 but the decorator function executes the other way around
 */
+
+/**
+ * Class, Method, Accessor decorators can return values
+ */
 function Logger(logString: string) {
   return function(constructor: Function) {
     console.log(logString);
@@ -28,7 +32,9 @@ function Logger(logString: string) {
 // new constructor function replaces original constructor function
 //this means that only when we insanciate an obj of the class we execute the code
 function WithTemplate(template: string, hookId: string) {
-  return function<T extends {new(...args: any[]): {name:string}}>(originalConstructor: T) {
+  return function<T extends { new (...args: any[]): { name: string } }>(
+    originalConstructor: T
+  ) {
     return class extends originalConstructor {
       constructor(..._: any[]) {
         super();
@@ -128,8 +134,36 @@ class Product {
     return this._price * (1 + tax);
   }
 }
-
-// const product = new Product('Food', 0);
-// product.price = 100
-// console.log(product);
 //Property Decorators
+
+//Auto Bind Decorator
+
+//overides old methods descriptor to this one
+function Autobind(
+  _: any,
+  _2: string,
+  descriptor: PropertyDescriptor
+) {
+  const originalMethod = descriptor.value;
+  const adjDescriptor: PropertyDescriptor = {
+    configurable: true,
+    enumerable: false,
+    get() {
+      const boundFn = originalMethod.bind(this); //this refers to the object that defines the getter
+      return boundFn
+    }
+  };
+  return adjDescriptor;
+}
+class Printer {
+  message = "This works";
+  @Autobind
+  showMessage() {
+    console.log(this.message);
+  }
+}
+const printer = new Printer();
+
+const button = document.querySelector("button")!;
+button.addEventListener("click", printer.showMessage);
+//Auto Bind Decorator
