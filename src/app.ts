@@ -25,13 +25,14 @@ function Logger(logString: string) {
 }
 
 function WithTemplate(template: string, hookId: string) {
-  return function(constructor: any) { //_ = aware of argument but i dont need it
-    console.log('WithTemplate');
+  return function(constructor: any) {
+    //_ = aware of argument but i dont need it
+    console.log("WithTemplate");
     const hookEl = document.getElementById(hookId);
     const person = new constructor();
-    if(hookEl){
+    if (hookEl) {
       hookEl.innerHTML = template;
-      hookEl.querySelector('h1')!.textContent = person.name;
+      hookEl.querySelector("h1")!.textContent = person.name;
     }
   };
 }
@@ -43,7 +44,7 @@ function WithTemplate(template: string, hookId: string) {
 //Decorator Factory call
 // @Logger('Logging Person') // executes a function that returs a decorator function
 //Decorator Factory call
-@Logger('Logging Person')
+@Logger("Logging Person")
 @WithTemplate("<h1>My Person Obj</h1>", "app")
 class Person {
   name = "Faron";
@@ -56,3 +57,39 @@ class Person {
 const person = new Person();
 console.log(person);
 //Decorators
+
+//Property Decorators
+
+function ProductLogger(target: any, propertyName: string | Symbol) {
+  console.log("Property decorator");
+  console.log(target);
+  console.log(propertyName);
+}
+class Product {
+  //Decorators on properties take 2 arguments - the target and the
+  @ProductLogger
+  title: string;
+  private _price: number;
+
+  set price(val: number) {
+    if (val > 0) {
+      this._price = val;
+    } else {
+      throw new Error("Invalid Price - price < 0 is not allowed");
+    }
+  }
+
+  constructor(t: string, p: number) {
+    this.title = t;
+    this._price = p;
+  }
+
+  getPriceWithTax(tax: number) {
+    return this._price * (1 + tax);
+  }
+}
+
+// const product = new Product('Food', 0);
+// product.price = 100
+// console.log(product);
+//Property Decorators
