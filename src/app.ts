@@ -3,6 +3,7 @@
 //Decorators are functions
 //Decorators are executed on class defenition
 //@function name to call decorator
+//_ = aware of argument but i dont need it
 
 //Decorators on a class take 1 argument - the constructor of the class
 //Standerd Decorator decleration
@@ -24,16 +25,21 @@ function Logger(logString: string) {
   };
 }
 
+// new constructor function replaces original constructor function
+//this means that only when we insanciate an obj of the class we execute the code
 function WithTemplate(template: string, hookId: string) {
-  return function(constructor: any) {
-    //_ = aware of argument but i dont need it
-    console.log("WithTemplate");
-    const hookEl = document.getElementById(hookId);
-    const person = new constructor();
-    if (hookEl) {
-      hookEl.innerHTML = template;
-      hookEl.querySelector("h1")!.textContent = person.name;
-    }
+  return function<T extends {new(...args: any[]): {name:string}}>(originalConstructor: T) {
+    return class extends originalConstructor {
+      constructor(..._: any[]) {
+        super();
+        console.log("WithTemplate");
+        const hookEl = document.getElementById(hookId);
+        if (hookEl) {
+          hookEl.innerHTML = template;
+          hookEl.querySelector("h1")!.textContent = this.name;
+        }
+      }
+    }; // constructor function
   };
 }
 //Decorator Factory
@@ -59,7 +65,6 @@ console.log(person);
 //Decorators
 
 //Property Decorators
-
 function ProductLogger(target: any, propertyName: string | Symbol) {
   console.log("Property decorator");
   console.log(target);
@@ -88,11 +93,7 @@ function MethodLogger(
   console.log(descriptor);
 }
 
-function ParameterLogger(
-  target: any,
-  name: string | Symbol,
-  position: number
-) {
+function ParameterLogger(target: any, name: string | Symbol, position: number) {
   console.log("Parameter decorator");
   console.log(target);
   console.log(name);
@@ -120,9 +121,10 @@ class Product {
     this._price = p;
   }
 
-   //Decorators on method take 3 arguments - the target, the name and the descriptor
+  //Decorators on method take 3 arguments - the target, the name and the descriptor
   @MethodLogger
-  getPriceWithTax(@ParameterLogger tax: number) { //Decorators on argument take 3 arguments - the target, the name and the position
+  getPriceWithTax(@ParameterLogger tax: number) {
+    //Decorators on argument take 3 arguments - the target, the name and the position
     return this._price * (1 + tax);
   }
 }
