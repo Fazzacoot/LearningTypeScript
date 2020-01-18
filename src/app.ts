@@ -139,18 +139,14 @@ class Product {
 //Auto Bind Decorator
 
 //overides old methods descriptor to this one
-function Autobind(
-  _: any,
-  _2: string,
-  descriptor: PropertyDescriptor
-) {
+function Autobind(_: any, _2: string, descriptor: PropertyDescriptor) {
   const originalMethod = descriptor.value;
   const adjDescriptor: PropertyDescriptor = {
     configurable: true,
     enumerable: false,
     get() {
       const boundFn = originalMethod.bind(this); //this refers to the object that defines the getter
-      return boundFn
+      return boundFn;
     }
   };
   return adjDescriptor;
@@ -167,3 +163,79 @@ const printer = new Printer();
 const button = document.querySelector("button")!;
 button.addEventListener("click", printer.showMessage);
 //Auto Bind Decorator
+
+//Validation with Decorators
+interface ValidatorConfig {
+  [property: string]: {
+    [validProps: string]: string[]; // ['requied' , true]
+  };
+}
+
+const registerValidators: ValidatorConfig = {};
+
+function Required(target: any, propName: string) {
+  registerValidators[target.constructor.name] = {
+    ...registerValidators[target.constructor.name],
+    [propName]: ["required"]
+  };
+}
+
+function PositiveNumber(target: any, propName: string) {
+  registerValidators[target.constructor.name] = {
+    ...registerValidators[target.constructor.name],
+    [propName]: ["positive"]
+  };
+}
+
+function validate(obj: any) {
+  const objectValidatorConfig = registerValidators[obj.constructor.name];
+  if (!obj) {
+    return true;
+  }
+  let isValid = true;
+  for (const prop in objectValidatorConfig) {
+    for (const validator of objectValidatorConfig[prop]) {
+      switch (validator) {
+        case "required":
+          isValid = isValid && !!obj[prop];
+          break;
+        case "positive":
+          isValid = isValid && obj[prop] > 0;
+          break;
+      }
+    }
+  }
+  return isValid;
+}
+
+class Course {
+  @Required
+  title: string;
+  @PositiveNumber
+  price: number;
+
+  constructor(t: string, p: number) {
+    this.title = t;
+    this.price = p;
+  }
+}
+
+const courseForm = document.querySelector("form")!;
+courseForm.addEventListener("submit", event => {
+  event.preventDefault();
+
+  const titleEl = document.getElementById("title") as HTMLInputElement;
+  const priceEl = document.getElementById("price") as HTMLInputElement;
+
+  const title = titleEl.value;
+  const price = +priceEl.value;
+
+  const createCourse = new Course(title, price);
+
+  if (!validate(createCourse)) {
+    alert("Invalid Input");
+    return;
+  }
+  console.log(createCourse);
+});
+//Validation with Decorators
