@@ -13,6 +13,7 @@ function Logger(logString) {
 }
 function WithTemplate(template, hookId) {
     return function (constructor) {
+        console.log('WithTemplate');
         const hookEl = document.getElementById(hookId);
         const person = new constructor();
         if (hookEl) {
@@ -28,6 +29,7 @@ let Person = class Person {
     }
 };
 Person = __decorate([
+    Logger('Logging Person'),
     WithTemplate("<h1>My Person Obj</h1>", "app")
 ], Person);
 const person = new Person();

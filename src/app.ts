@@ -13,6 +13,10 @@
 //Standerd Decorator decleration
 
 //Decorator Factory
+/*
+function rules apply so  Logger executes before  WithTemplate
+but the decorator function executes the other way around
+*/
 function Logger(logString: string) {
   return function(constructor: Function) {
     console.log(logString);
@@ -22,6 +26,7 @@ function Logger(logString: string) {
 
 function WithTemplate(template: string, hookId: string) {
   return function(constructor: any) { //_ = aware of argument but i dont need it
+    console.log('WithTemplate');
     const hookEl = document.getElementById(hookId);
     const person = new constructor();
     if(hookEl){
@@ -38,6 +43,7 @@ function WithTemplate(template: string, hookId: string) {
 //Decorator Factory call
 // @Logger('Logging Person') // executes a function that returs a decorator function
 //Decorator Factory call
+@Logger('Logging Person')
 @WithTemplate("<h1>My Person Obj</h1>", "app")
 class Person {
   name = "Faron";
