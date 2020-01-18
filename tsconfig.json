@@ -71,7 +71,8 @@
     "S4 Completed",
     "S5 Completed",
     "S6 Completed",
-    "S7 Completed"
+    "S7 Completed",
+    "S8 Completed"
   ]
   //include files from compilation only files in here will be compiled
   // "include": [
