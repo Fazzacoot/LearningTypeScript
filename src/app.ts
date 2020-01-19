@@ -1,3 +1,15 @@
+//Drag & Drop Interaces
+interface Draggable {
+  dragStartHandler(event: DragEvent): void;
+  dragEndHandler(event: DragEvent): void;
+}
+interface DragTarget {
+  dragOverHandler(event: DragEvent): void; //signal is a valid drag targer
+  dropHandler(event: DragEvent): void; //react to actual drop will permit the drop
+  dragLeaveHandler(event: DragEvent): void; //useful to give visual feedback if reverting
+}
+//Drag & Drop Interaces
+
 //Autobind decorator
 function Autobind(_: any, _2: string, descriptor: PropertyDescriptor) {
   //original method
@@ -58,80 +70,255 @@ function validate(validatableInput: Validatable) {
 }
 //Validation
 
-//ProjectList
-class ProjectList {
+//ProjectType
+enum ProjectStatus {
+  Active,
+  Finished
+}
+class Project {
+  constructor(
+    public id: string,
+    public title: string,
+    public description: string,
+    public people: number,
+    public status: ProjectStatus
+  ) {}
+}
+//ProjectType
+
+type Listener<T> = (items: T[]) => void;
+
+class State<T> {
+  protected listeners: Listener<T>[] = [];
+
+  addListener(listenerFn: Listener<T>) {
+    this.listeners.push(listenerFn);
+  }
+}
+//Project State
+//Singleton class that will always return the same state
+class ProjectState extends State<Project> {
+  private projects: Project[] = [];
+  private static instance: ProjectState;
+
+  private constructor() {
+    super();
+  }
+
+  static getInstance() {
+    if (this.instance) {
+      return this.instance;
+    }
+    return (this.instance = new ProjectState());
+  }
+
+  addProjects(title: string, description: string, people: number) {
+    const newProject = new Project(
+      Math.random().toString(),
+      title,
+      description,
+      people,
+      ProjectStatus.Active
+    );
+    this.projects.push(newProject);
+    this.updateListeners();
+  }
+
+  moveProject(projectId: string, newStatus: ProjectStatus) {
+    const project = this.projects.find(prj => prj.id === projectId);
+    if (project && project.status !== newStatus) {
+      project.status = newStatus;
+      this.updateListeners();
+    }
+  }
+
+  private updateListeners() {
+    for (const listenerFn of this.listeners) {
+      //slice() passes a copy of the array  to the function
+      listenerFn(this.projects.slice());
+    }
+  }
+}
+
+const projectState = ProjectState.getInstance();
+//Project State
+
+//ComponentBase
+abstract class Component<T extends HTMLElement, U extends HTMLElement> {
   templateEl: HTMLTemplateElement;
-  appEl: HTMLDivElement;
-  listEl: HTMLElement;
-  constructor(private type: "active" | "finished") {
+  hostEl: T;
+  element: U;
+
+  constructor(
+    templateId: string,
+    hostId: string,
+    insertAtStart: boolean,
+    newElId?: string
+  ) {
     // get template element
     this.templateEl = document.getElementById(
-      "project-list"
+      templateId
     ) as HTMLTemplateElement;
     // get div where you want to render the code
-    this.appEl = document.getElementById("app") as HTMLDivElement;
+    this.hostEl = document.getElementById(hostId) as T;
     //import the templates content and deep clone it - get all nested elements as well
     const importedNode = document.importNode(this.templateEl.content, true);
     //convert the templete from a fragment to an html element. in this case form el as we know it will be a form
-    this.listEl = importedNode.firstElementChild as HTMLElement;
+    this.element = importedNode.firstElementChild as U;
     //set id of the form
-    this.listEl.id = `${this.type}-projects`;
+    if (newElId) {
+      this.element.id = newElId;
+    }
 
-    //call method
-    this.attach();
-    //call method
+    this.attach(insertAtStart);
+  }
+
+  private attach(insertAtStart: boolean) {
+    //insert the element into the main render div
+    this.hostEl.insertAdjacentElement(
+      insertAtStart ? "afterbegin" : "beforeend",
+      this.element
+    );
+  }
+
+  abstract configure(): void;
+  abstract renderContent(): void;
+}
+//ComponentBase
+
+//Project Item
+class ProjectItem extends Component<HTMLUListElement, HTMLLIElement>
+  implements Draggable {
+  private project: Project;
+
+  get persons() {
+    if (this.project.people === 1) {
+      return "1 person";
+    } else {
+      return `${this.project.people} persons`;
+    }
+  }
+
+  constructor(hostId: string, project: Project) {
+    super("single-project", hostId, false, project.id);
+    this.project = project;
+    this.configure();
+    this.renderContent();
+  }
+  @Autobind
+  dragStartHandler(event: DragEvent) {
+    event.dataTransfer!.setData("text/plain", this.project.id);
+    event.dataTransfer!.effectAllowed = "move";
+  }
+
+  dragEndHandler(_: DragEvent) {
+    console.log("Drag End");
+  }
+
+  configure() {
+    this.element.addEventListener("dragstart", this.dragStartHandler);
+    this.element.addEventListener("dragend", this.dragEndHandler);
+  }
+  renderContent() {
+    this.element.querySelector("h2")!.textContent = this.project.title;
+    this.element.querySelector("h3")!.textContent = `${this.persons} assigned`;
+    this.element.querySelector("p")!.textContent = this.project.description;
+  }
+}
+//Project Item
+
+//ProjectList
+class ProjectList extends Component<HTMLDivElement, HTMLElement>
+  implements DragTarget {
+  assignedProjects: Project[];
+  constructor(private type: "active" | "finished") {
+    super("project-list", "app", false, `${type}-projects`);
+    this.assignedProjects = [];
+
+    this.configure();
     this.renderContent();
   }
 
-  private renderContent() {
+  @Autobind
+  dragOverHandler(event: DragEvent): void {
+    if (event.dataTransfer && event.dataTransfer.types[0] === "text/plain") {
+      event.preventDefault();
+      const listEl = this.element.querySelector("ul")!;
+      listEl.classList.add("droppable");
+    }
+  }
+  @Autobind
+  dropHandler(event: DragEvent): void {
+    const projId = event.dataTransfer!.getData("text/plain");
+    projectState.moveProject(
+      projId,
+      this.type === "active" ? ProjectStatus.Active : ProjectStatus.Finished
+    );
+  }
+  @Autobind
+  dragLeaveHandler(_: DragEvent): void {
+    const listEl = this.element.querySelector("ul")!;
+    listEl.classList.remove("droppable");
+  }
+
+  configure() {
+    this.element.addEventListener("dragover", this.dragOverHandler);
+    this.element.addEventListener("dragleave", this.dragLeaveHandler);
+    this.element.addEventListener("drop", this.dropHandler);
+    //call listener
+    projectState.addListener((projects: Project[]) => {
+      const revevantProjects = projects.filter(proj => {
+        if (this.type === "active") {
+          return proj.status === ProjectStatus.Active;
+        }
+        return proj.status === ProjectStatus.Finished;
+      });
+      this.assignedProjects = revevantProjects;
+      this.renderProjects();
+    });
+  }
+  renderContent() {
     const listId = `${this.type}-projects-list`;
-    this.listEl.querySelector("ul")!.id = listId;
-    this.listEl.querySelector(
+    this.element.querySelector("ul")!.id = listId;
+    this.element.querySelector(
       "h2"
     )!.textContent = `${this.type.toUpperCase()} PROJECTS`;
   }
 
-  private attach() {
-    //insert the element into the main render div
-    this.appEl.insertAdjacentElement("beforeend", this.listEl);
+  private renderProjects() {
+    const listEl = document.getElementById(
+      `${this.type}-projects-list`
+    ) as HTMLUListElement;
+    listEl.innerHTML = "";
+    for (const item of this.assignedProjects) {
+      new ProjectItem(`${this.type}-projects-list`, item);
+    }
   }
 }
 //ProjectList
 
 //ProjectForm
-class ProjectForm {
-  templateEl: HTMLTemplateElement;
-  appEl: HTMLDivElement;
-  formEl: HTMLFormElement;
+class ProjectForm extends Component<HTMLDivElement, HTMLFormElement> {
   titleEl: HTMLInputElement;
   descriptionEl: HTMLInputElement;
   peopleEl: HTMLInputElement;
   constructor() {
-    // get template element
-    this.templateEl = document.getElementById(
-      "project-input"
-    ) as HTMLTemplateElement;
-    // get div where you want to render the code
-    this.appEl = document.getElementById("app") as HTMLDivElement;
-    //import the templates content and deep clone it - get all nested elements as well
-    const importedNode = document.importNode(this.templateEl.content, true);
-    //convert the templete from a fragment to an html element. in this case form el as we know it will be a form
-    this.formEl = importedNode.firstElementChild as HTMLFormElement;
-    //set id of the form
-    this.formEl.id = "user-input";
-
+    super("project-input", "app", true, "user-input");
     //get all input fields from the element
-    this.titleEl = this.formEl.querySelector("#title") as HTMLInputElement;
-    this.descriptionEl = this.formEl.querySelector(
+    this.titleEl = this.element.querySelector("#title") as HTMLInputElement;
+    this.descriptionEl = this.element.querySelector(
       "#description"
     ) as HTMLInputElement;
-    this.peopleEl = this.formEl.querySelector("#people") as HTMLInputElement;
-
+    this.peopleEl = this.element.querySelector("#people") as HTMLInputElement;
     //call method
     this.configure();
-    //call method
-    this.attach();
   }
+  //adds event listener to form submit
+  configure() {
+    this.element.addEventListener("submit", this.submintHandler);
+  }
+
+  renderContent() {}
 
   private gatherUserInput(): [string, string, number] | void {
     //get all input values
@@ -178,6 +365,7 @@ class ProjectForm {
     if (Array.isArray(userInput)) {
       //destructure tuple to get values
       const [tite, desc, people] = userInput;
+      projectState.addProjects(tite, desc, people);
       console.log(tite, desc, people);
       this.clearInputs();
     }
@@ -187,16 +375,6 @@ class ProjectForm {
     this.titleEl.value = "";
     this.descriptionEl.value = "";
     this.peopleEl.value = "";
-  }
-
-  //adds event listener to form submit
-  private configure() {
-    this.formEl.addEventListener("submit", this.submintHandler);
-  }
-
-  private attach() {
-    //insert the element into the main render div
-    this.appEl.insertAdjacentElement("afterbegin", this.formEl);
   }
 }
 //ProjectForm
