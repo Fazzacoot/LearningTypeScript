@@ -1,9 +1,9 @@
 // no curly braces will import the default export from the file
-import Component from "./base-component.js";
+import Component from "./base-component";
 //grouped imports
-import * as Validation from "../util/validation.js"; //use Validation.xyz
-import { Autobind as autobind } from "../decorators/autobind.js"; // assign aliase with as 
-import { projectState } from "../state/project-state.js";
+import * as Validation from "../util/validation"; //use Validation.xyz
+import { Autobind as autobind } from "../decorators/autobind"; // assign aliase with as 
+import { projectState } from "../state/project-state";
 
 
 //ProjectForm

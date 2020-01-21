@@ -1,5 +1,5 @@
-import { ProjectList } from "./components/project-list.js";
-import { ProjectForm } from "./components/project-form.js";
+import { ProjectList } from "./components/project-list";
+import { ProjectForm } from "./components/project-form";
 
 //Import/Export - use "module": "es2015"
 //importing namespace - only exisit in the typescript scope
