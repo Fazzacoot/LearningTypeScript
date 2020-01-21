@@ -19,6 +19,7 @@
   },
   "homepage": "https://github.com/Fazzacoot/LearningTypeScript#readme",
   "devDependencies": {
+    "@types/lodash": "^4.14.149",
     "clean-webpack-plugin": "^3.0.0",
     "lite-server": "^2.5.4",
     "ts-loader": "^6.2.1",
@@ -26,5 +27,11 @@
     "webpack": "^4.41.5",
     "webpack-cli": "^3.3.10",
     "webpack-dev-server": "^3.10.1"
+  },
+  "dependencies": {
+    "class-transformer": "^0.2.3",
+    "class-validator": "^0.11.0",
+    "lodash": "^4.17.15",
+    "reflect-metadata": "^0.1.13"
   }
 }

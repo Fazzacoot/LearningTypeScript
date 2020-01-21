@@ -5,8 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>ProjectManager</title>
-    <link rel="stylesheet" href="app.css" />
-    <script src="dist/bundle.js" type="module"></script>
+    <!-- <link rel="stylesheet" href="app.css" type="text/css" /> -->
+    <script src="dist/bundle.js" type="module" defer></script>
   </head>
   <body>
     <template id="project-input">
@@ -42,5 +42,8 @@
       </section>
     </template>
     <div id="app"></div>
+    <script>
+      var GLOBAL = "GLOBAL VAR";
+    </script>
   </body>
 </html>
