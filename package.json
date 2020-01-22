@@ -19,6 +19,7 @@
   },
   "homepage": "https://github.com/Fazzacoot/LearningTypeScript#readme",
   "devDependencies": {
+    "@types/googlemaps": "^3.39.2",
     "@types/lodash": "^4.14.149",
     "clean-webpack-plugin": "^3.0.0",
     "lite-server": "^2.5.4",
@@ -29,6 +30,7 @@
     "webpack-dev-server": "^3.10.1"
   },
   "dependencies": {
+    "axios": "^0.19.2",
     "class-transformer": "^0.2.3",
     "class-validator": "^0.11.0",
     "lodash": "^4.17.15",
