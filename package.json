@@ -33,7 +33,7 @@
     "axios": "^0.19.2",
     "class-transformer": "^0.2.3",
     "class-validator": "^0.11.0",
-    "lodash": "^4.17.15",
+    "lodash": "^4.17.19",
     "reflect-metadata": "^0.1.13"
   }
 }
